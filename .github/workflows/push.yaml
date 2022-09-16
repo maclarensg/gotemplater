@@ -2,27 +2,20 @@ name: Run tests
 
 on:
   push:
+    # Sequence of patterns matched against refs/tags
     tags:
-       - '*'
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
 jobs:  
-  test-build-push:
     runs-on: ubuntu-latest
 
     steps:
-    
     - name: Checkout Code
       uses: actions/checkout@v2
 
-    - name: Set output
-      id: vars
-      run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
-    
-    - name: Check output
-      env:
-        RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
     ## Builds our docker image!
     - name: Build the Docker image
-      run: docker build . -t maclarensg/gotemplater:latest -t maclarensg/gotemplater:$RELEASE_VERSION
+      run: docker build . -t maclarensg/gotemplater:latest -t maclarensg/gotemplater:${{ github.ref }}
 
     ## Publishes our image to Docker Hub 😎
     - name: Publish to Registry
