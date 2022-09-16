@@ -1,0 +1,10 @@
+users:
+- name: foo
+  age: 40
+  job: engineer
+
+- name: bar
+  age: 28
+  job: chef
+
+somestring: 15-09-2022

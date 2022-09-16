@@ -1,0 +1,9 @@
+{{- range $i, $d := .users -}}
+{{inc $i }})  Name: {{$d.name}}
+    Age: {{$d.age}}
+    Job: {{$d.job}}
+{{ end }}
+
+{{ range $_, $item := split "-" .somestring }}
+    {{$item}}
+{{ end }}
