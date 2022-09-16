@@ -2,34 +2,46 @@ name: Run tests
 
 on:
   push:
+    # Sequence of patterns matched against refs/tags
     tags:
-       - '*'
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
 jobs:  
-  test-build-push:
+  build-push:
     runs-on: ubuntu-latest
 
     steps:
-    
     - name: Checkout Code
       uses: actions/checkout@v2
-
-    - name: Set output
-      id: vars
-      run: echo ::set-output name=tag::${GITHUB_REF#refs/*/}
+   
+    - name: Set env
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
     
-    - name: Check output
-      env:
-        RELEASE_VERSION: ${{ steps.vars.outputs.tag }}
+    - name: Check Release tags
+      run: |
+        echo $RELEASE_VERSION
+        echo ${{ env.RELEASE_VERSION }}
+
     ## Builds our docker image!
     - name: Build the Docker image
-      run: docker build . -t maclarensg/gotemplater:latest -t maclarensg/gotemplater:$RELEASE_VERSION
+      run: docker build . -t maclarensg/gotemplater:latest -t maclarensg/gotemplater:${{ env.RELEASE_VERSION }}
 
     ## Publishes our image to Docker Hub 😎
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
         ## the name of our image
-        name: maclarensg/gotemplater:$RELEASE_VERSION
+        name: maclarensg/gotemplater:${{ env.RELEASE_VERSION }}
+        ## Here we pass in our Docker Username
+        username: ${{ secrets.DOCKER_USERNAME }}
+        ## and our Docker password which 
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        ## the name of our image
+        name: maclarensg/gotemplater:latest
         ## Here we pass in our Docker Username
         username: ${{ secrets.DOCKER_USERNAME }}
         ## and our Docker password which 
