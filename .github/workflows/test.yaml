@@ -4,8 +4,13 @@ on: [push, pull_request]
 
 jobs:  
   test:
-    runs-on: golang:1.17.7-alpine3.15 
+    runs-on: ubuntu-latest
 
     steps:
-    - name: test
+    - name: Setup Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17.7
+
+    - name: Run go test with coverage
       run: go test . -coverprofile cover.out
