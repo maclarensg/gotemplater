@@ -22,7 +22,7 @@ jobs:
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
         ## the name of our image
-        name: maclarensg/gotemplater:$RELEASE_VERSION
+        name: maclarensg/gotemplater:${{ github.ref }}
         ## Here we pass in our Docker Username
         username: ${{ secrets.DOCKER_USERNAME }}
         ## and our Docker password which 
