@@ -28,7 +28,7 @@ jobs:
 
     ## Publishes our image to Docker Hub 😎
     - name: Publish to Registry
-      uses: elgohr/Publish-Docker-Github-Action@master
+      uses: elgohr/Publish-Docker-Github-Action@v5
       with:
         ## the name of our image
         name: maclarensg/gotemplater:${{ env.RELEASE_VERSION }}
@@ -38,7 +38,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Publish to Registry
-      uses: elgohr/Publish-Docker-Github-Action@master
+      uses: elgohr/Publish-Docker-Github-Action@v5
       with:
         ## the name of our image
         name: maclarensg/gotemplater:latest
